@@ -11,7 +11,7 @@ Este app **não tem banco próprio**. Todo dado vem da API do CRM
 ```
 oitonove.com.br/criadores      → candidatura pública (form → CRM)
 crm.oitonove.com.br            → backoffice + API (dono do schema/banco)
-portal.oitonove.com.br         → este app (cliente da API do CRM)
+criadores.oitonove.com.br      → este app (cliente da API do CRM)
 ```
 
 Auth: magic-link por email (token one-time, 15 min) → o CRM emite um bearer
