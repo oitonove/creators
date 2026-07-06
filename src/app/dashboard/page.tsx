@@ -65,7 +65,14 @@ export default async function DashboardPage() {
         {personalLink && (
           <div className="mt-3 text-[12px] text-neutral-300">
             Link pessoal:{" "}
-            <span className="font-mono text-[12px] text-white">{personalLink}</span>
+            <a
+              href={personalLink}
+              target="_blank"
+              rel="noopener"
+              className="font-mono text-[12px] text-white underline decoration-neutral-500 underline-offset-2"
+            >
+              {personalLink}
+            </a>
           </div>
         )}
       </div>
