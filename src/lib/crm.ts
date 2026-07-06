@@ -31,10 +31,10 @@ export class CrmError extends Error {
 }
 
 /** Fetch autenticado com o bearer do cookie. Lança CrmError(401) sem sessão. */
-async function authedFetch(path: string): Promise<Json> {
+async function authedFetch(path: string, init?: RequestInit): Promise<Json> {
   const token = await getSessionToken();
   if (!token) throw new CrmError("unauthorized", 401);
-  return crmFetch(path, { headers: { Authorization: `Bearer ${token}` } });
+  return crmFetch(path, { ...init, headers: { Authorization: `Bearer ${token}`, ...init?.headers } });
 }
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
@@ -57,6 +57,14 @@ export async function requestPasswordReset(email: string): Promise<void> {
   await crmFetch("/api/creators/auth/forgot", {
     method: "POST",
     body: JSON.stringify({ email }),
+  });
+}
+
+/** Troca a senha do criador logado. Lança CrmError com a mensagem do CRM se falhar. */
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  await authedFetch("/api/creators/auth/change-password", {
+    method: "POST",
+    body: JSON.stringify({ currentPassword, newPassword }),
   });
 }
 
