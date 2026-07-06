@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { loginWithPassword } from "@/lib/crm";
 import { getSessionToken, setSessionToken } from "@/lib/session";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export const metadata = { title: "Entrar — Portal do Criador OITONOVE" };
 
@@ -52,12 +53,7 @@ export default async function LoginPage({
           placeholder="Senha"
           className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[14px] placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none"
         />
-        <button
-          type="submit"
-          className="rounded-xl bg-neutral-900 px-4 py-3 text-[14px] font-medium text-white transition hover:bg-neutral-700"
-        >
-          Entrar
-        </button>
+        <SubmitButton pendingLabel="Entrando…">Entrar</SubmitButton>
       </form>
 
       <p className="mt-4 text-[12px] text-neutral-400">

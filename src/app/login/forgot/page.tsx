@@ -1,6 +1,7 @@
 // /login/forgot — pede reset de senha (nova senha é enviada por email).
 import { requestPasswordReset } from "@/lib/crm";
 import { redirect } from "next/navigation";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export const metadata = { title: "Recuperar senha — Portal do Criador OITONOVE" };
 
@@ -45,12 +46,7 @@ export default async function ForgotPage({
             placeholder="seu@email.com"
             className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[14px] placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none"
           />
-          <button
-            type="submit"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-[14px] font-medium text-white transition hover:bg-neutral-700"
-          >
-            Enviar nova senha
-          </button>
+          <SubmitButton pendingLabel="Enviando…">Enviar nova senha</SubmitButton>
         </form>
       )}
 
