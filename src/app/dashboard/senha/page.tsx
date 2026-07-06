@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { changePassword, CrmError } from "@/lib/crm";
-import { getSessionToken } from "@/lib/session";
+import { getSessionToken, setSessionToken } from "@/lib/session";
 import { SubmitButton } from "@/components/SubmitButton";
 
 export const metadata = { title: "Trocar senha — Portal do Criador OITONOVE" };
@@ -17,13 +17,16 @@ async function submit(formData: FormData) {
     redirect("/dashboard/senha?erro=" + encodeURIComponent("As senhas novas não coincidem."));
   }
 
+  let newSessionToken: string;
   try {
-    await changePassword(currentPassword, newPassword);
+    newSessionToken = await changePassword(currentPassword, newPassword);
   } catch (e) {
     const msg = e instanceof CrmError ? e.message : "Não deu pra trocar a senha. Tenta de novo.";
     redirect("/dashboard/senha?erro=" + encodeURIComponent(msg));
   }
 
+  // CRM revoga o bearer antigo na troca — atualiza o cookie com o novo pra não deslogar.
+  await setSessionToken(newSessionToken);
   redirect("/dashboard?senha=1");
 }
 

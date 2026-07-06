@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMe, getSales, getPayouts, getMaterials, CrmError, type Sale } from "@/lib/crm";
+import { clearSessionToken } from "@/lib/session";
 import { CopyButton } from "@/components/CopyButton";
 import { MonthlyBarChart } from "@/components/MonthlyBarChart";
 
@@ -61,7 +62,10 @@ export default async function DashboardPage({
       getMaterials(),
     ]);
   } catch (e) {
-    if (e instanceof CrmError && e.status === 401) redirect("/logout");
+    if (e instanceof CrmError && e.status === 401) {
+      await clearSessionToken();
+      redirect("/login");
+    }
     throw e;
   }
 
@@ -87,9 +91,14 @@ export default async function DashboardPage({
           <Link href="/dashboard/senha" className="text-[12px] text-neutral-400 underline hover:text-neutral-600">
             trocar senha
           </Link>
-          <Link href="/logout" className="text-[12px] text-neutral-400 underline hover:text-neutral-600">
-            sair
-          </Link>
+          <form action="/logout" method="POST">
+            <button
+              type="submit"
+              className="cursor-pointer text-[12px] text-neutral-400 underline hover:text-neutral-600"
+            >
+              sair
+            </button>
+          </form>
         </div>
       </div>
 

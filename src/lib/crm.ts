@@ -60,12 +60,20 @@ export async function requestPasswordReset(email: string): Promise<void> {
   });
 }
 
-/** Troca a senha do criador logado. Lança CrmError com a mensagem do CRM se falhar. */
-export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
-  await authedFetch("/api/creators/auth/change-password", {
+/**
+ * Troca a senha do criador logado. Lança CrmError com a mensagem do CRM se falhar.
+ * Retorna o bearer novo — o CRM bumpa a sessionVersion na troca (revoga sessões
+ * antigas), então o cookie do portal precisa ser atualizado com esse token.
+ */
+export async function changePassword(currentPassword: string, newPassword: string): Promise<string> {
+  const json = await authedFetch("/api/creators/auth/change-password", {
     method: "POST",
     body: JSON.stringify({ currentPassword, newPassword }),
   });
+  if (typeof json.sessionToken !== "string") {
+    throw new CrmError("server_misconfigured", 500);
+  }
+  return json.sessionToken;
 }
 
 // ── Dados do criador ──────────────────────────────────────────────────────────
