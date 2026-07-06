@@ -191,7 +191,7 @@ export default async function DashboardPage() {
           </a>{" "}
           ·{" "}
           <a href={materials.brand.instagram} className="underline">
-            @oitonove
+            @oitonoveoficial
           </a>
         </p>
       </section>

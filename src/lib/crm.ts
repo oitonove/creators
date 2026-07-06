@@ -39,23 +39,25 @@ async function authedFetch(path: string): Promise<Json> {
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
-export async function requestMagicLink(email: string): Promise<void> {
-  await crmFetch("/api/creators/auth/request", {
-    method: "POST",
-    body: JSON.stringify({ email }),
-  });
-}
-
-export async function verifyMagicToken(token: string): Promise<string | null> {
+/** Login por email+senha. Retorna o bearer da sessão ou null (credenciais inválidas). */
+export async function loginWithPassword(email: string, password: string): Promise<string | null> {
   try {
-    const json = await crmFetch("/api/creators/auth/verify", {
+    const json = await crmFetch("/api/creators/auth/login", {
       method: "POST",
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ email, password }),
     });
     return typeof json.sessionToken === "string" ? json.sessionToken : null;
   } catch {
     return null;
   }
+}
+
+/** Pede reset de senha (nova senha é gerada e enviada por email). */
+export async function requestPasswordReset(email: string): Promise<void> {
+  await crmFetch("/api/creators/auth/forgot", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
 }
 
 // ── Dados do criador ──────────────────────────────────────────────────────────
