@@ -7,6 +7,15 @@ import { SubmitButton } from "@/components/SubmitButton";
 
 export const metadata = { title: "Trocar senha - Portal do Criador OITONOVE" };
 
+const FALLBACK_ERRO = "Não deu pra trocar a senha. Tenta de novo.";
+
+// O CRM devolve códigos crus (ex.: "unauthorized"); só mensagens já em
+// português passam direto pra tela.
+function traduzErro(msg: string) {
+  if (/^[a-z0-9_]+$/i.test(msg) || msg.startsWith("HTTP ")) return FALLBACK_ERRO;
+  return msg;
+}
+
 async function submit(formData: FormData) {
   "use server";
   const currentPassword = String(formData.get("currentPassword") ?? "");
@@ -21,7 +30,8 @@ async function submit(formData: FormData) {
   try {
     newSessionToken = await changePassword(currentPassword, newPassword);
   } catch (e) {
-    const msg = e instanceof CrmError ? e.message : "Não deu pra trocar a senha. Tenta de novo.";
+    if (e instanceof CrmError && e.status === 401) redirect("/login");
+    const msg = e instanceof CrmError ? traduzErro(e.message) : FALLBACK_ERRO;
     redirect("/dashboard/senha?erro=" + encodeURIComponent(msg));
   }
 

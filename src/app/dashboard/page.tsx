@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMe, getSales, getPayouts, getMaterials, CrmError, type Sale } from "@/lib/crm";
-import { clearSessionToken } from "@/lib/session";
 import { CopyButton } from "@/components/CopyButton";
 import { MonthlyBarChart } from "@/components/MonthlyBarChart";
 
@@ -63,7 +62,8 @@ export default async function DashboardPage({
     ]);
   } catch (e) {
     if (e instanceof CrmError && e.status === 401) {
-      await clearSessionToken();
+      // Não limpar o cookie aqui: cookies() é imutável em Server Component e
+      // o delete lança, virando 500. O login sobrescreve o cookie velho.
       redirect("/login");
     }
     throw e;

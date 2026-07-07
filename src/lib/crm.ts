@@ -5,7 +5,9 @@
 import { getSessionToken } from "./session";
 
 const BASE = process.env.CRM_API_BASE_URL || "https://crm.oitonove.com.br";
-const MOCK_ENABLED = process.env.CRM_USE_MOCK_AUTH === "true";
+// Mock nunca liga em produção, mesmo com a flag setada por engano.
+const MOCK_ENABLED =
+  process.env.CRM_USE_MOCK_AUTH === "true" && process.env.NODE_ENV !== "production";
 const MOCK_EMAIL = process.env.MOCK_CREATOR_EMAIL || "teste@oitonove.com.br";
 const MOCK_PASSWORD = process.env.MOCK_CREATOR_PASSWORD || "teste1234";
 const MOCK_TOKEN = "mock-session-token";
