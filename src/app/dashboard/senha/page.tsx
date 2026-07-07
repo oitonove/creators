@@ -1,11 +1,11 @@
-// /dashboard/senha — trocar senha (exige senha atual).
+// /dashboard/senha - trocar senha (exige senha atual).
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { changePassword, CrmError } from "@/lib/crm";
 import { getSessionToken, setSessionToken } from "@/lib/session";
 import { SubmitButton } from "@/components/SubmitButton";
 
-export const metadata = { title: "Trocar senha — Portal do Criador OITONOVE" };
+export const metadata = { title: "Trocar senha - Portal do Criador OITONOVE" };
 
 async function submit(formData: FormData) {
   "use server";
@@ -25,7 +25,7 @@ async function submit(formData: FormData) {
     redirect("/dashboard/senha?erro=" + encodeURIComponent(msg));
   }
 
-  // CRM revoga o bearer antigo na troca — atualiza o cookie com o novo pra não deslogar.
+  // CRM revoga o bearer antigo na troca - atualiza o cookie com o novo pra não deslogar.
   await setSessionToken(newSessionToken);
   redirect("/dashboard?senha=1");
 }

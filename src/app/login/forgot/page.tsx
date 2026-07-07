@@ -1,9 +1,9 @@
-// /login/forgot — pede reset de senha (nova senha é enviada por email).
-import { requestPasswordReset } from "@/lib/crm";
+// /login/forgot - pede reset de senha (nova senha é enviada por email).
+import { getMockCredentials, requestPasswordReset } from "@/lib/crm";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "@/components/SubmitButton";
 
-export const metadata = { title: "Recuperar senha — Portal do Criador OITONOVE" };
+export const metadata = { title: "Recuperar senha - Portal do Criador OITONOVE" };
 
 async function forgot(formData: FormData) {
   "use server";
@@ -12,7 +12,7 @@ async function forgot(formData: FormData) {
     try {
       await requestPasswordReset(email);
     } catch {
-      // resposta é idêntica com ou sem sucesso — sem enumeração
+      // resposta é idêntica com ou sem sucesso - sem enumeração
     }
   }
   redirect("/login/forgot?enviado=1");
@@ -24,6 +24,7 @@ export default async function ForgotPage({
   searchParams: Promise<{ enviado?: string }>;
 }) {
   const sp = await searchParams;
+  const mock = getMockCredentials();
 
   return (
     <main className="mx-auto max-w-sm">
@@ -33,9 +34,17 @@ export default async function ForgotPage({
         pra ele.
       </p>
 
+      {mock && (
+        <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-[13px] text-sky-800">
+          No modo local de teste, use a conta <strong>{mock.email}</strong> com a senha <strong>{mock.password}</strong>.
+        </div>
+      )}
+
       {sp.enviado ? (
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-[13px] text-emerald-800">
-          Se o email estiver cadastrado, uma nova senha foi enviada.
+          {mock
+            ? "No modo local, a senha não muda automaticamente. Use as credenciais exibidas na tela de login."
+            : "Se o email estiver cadastrado, uma nova senha foi enviada."}
         </div>
       ) : (
         <form action={forgot} className="flex flex-col gap-3">
@@ -43,6 +52,7 @@ export default async function ForgotPage({
             type="email"
             name="email"
             required
+            defaultValue={mock?.email}
             placeholder="seu@email.com"
             className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[14px] placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none"
           />

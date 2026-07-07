@@ -1,4 +1,4 @@
-// src/lib/session.ts — Portal do Criador OITONOVE
+// src/lib/session.ts - Portal do Criador OITONOVE
 // Cookie httpOnly próprio do portal guardando o bearer emitido pelo CRM.
 
 import { cookies } from "next/headers";

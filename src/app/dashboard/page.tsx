@@ -1,4 +1,4 @@
-// /dashboard — painel do criador: cupom, link pessoal, vendas, comissão,
+// /dashboard - painel do criador: cupom, link pessoal, vendas, comissão,
 // pagamentos, campanhas e regras. Todo dado vem do CRM, escopado ao bearer.
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -7,7 +7,7 @@ import { clearSessionToken } from "@/lib/session";
 import { CopyButton } from "@/components/CopyButton";
 import { MonthlyBarChart } from "@/components/MonthlyBarChart";
 
-export const metadata = { title: "Meu painel — Portal do Criador OITONOVE" };
+export const metadata = { title: "Meu painel - Portal do Criador OITONOVE" };
 
 const brl = (cents: number) =>
   (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -110,7 +110,7 @@ export default async function DashboardPage({
               Seu cupom pessoal · 10% pro seu público
             </div>
             <div className="mt-1 font-mono text-[28px] font-semibold tracking-wide">
-              {me.couponCode ?? "—"}
+              {me.couponCode ?? "-"}
             </div>
           </div>
           {me.couponCode && <CopyButton text={me.couponCode} label="Copiar cupom" />}
@@ -159,7 +159,7 @@ export default async function DashboardPage({
       <p className="-mt-8 mb-10 text-[12px] leading-relaxed text-neutral-400">
         <strong className="text-neutral-500">Disponível</strong> é a comissão acumulada
         que ainda não foi paga. Pagamento é feito via Pix pelo time OITONOVE, sem prazo
-        fixo — some do "disponível" e aparece em "Pagamentos" assim que for feito.
+        fixo - some do "disponível" e aparece em "Pagamentos" assim que for feito.
       </p>
 
       {/* Vendas por mês */}
@@ -207,7 +207,7 @@ export default async function DashboardPage({
                   </td>
                   <td className="px-4 py-3 text-right">{brl(s.totalCents)}</td>
                   <td className="px-4 py-3 text-right font-medium">
-                    {s.commissionCents ? brl(s.commissionCents) : "—"}
+                    {s.commissionCents ? brl(s.commissionCents) : "-"}
                   </td>
                 </tr>
               ))}
@@ -282,7 +282,7 @@ export default async function DashboardPage({
           rel="noopener"
           className="mt-4 flex items-center justify-between rounded-xl border border-neutral-200/60 bg-white p-4 text-[13px] font-medium transition hover:border-neutral-300"
         >
-          <span>📎 Guia do criador — fotos, tom de voz e regras de conteúdo</span>
+          <span>📎 Guia do criador - fotos, tom de voz e regras de conteúdo</span>
           <span className="text-neutral-400">→</span>
         </a>
         <p className="mt-3 text-[12px] text-neutral-400">

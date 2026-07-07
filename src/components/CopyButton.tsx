@@ -11,7 +11,7 @@ export function CopyButton({ text, label = "Copiar" }: { text: string; label?: s
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // clipboard indisponível (http local, permissão negada) — ignora
+      // clipboard indisponível (http local, permissão negada) - ignora
     }
   }
 

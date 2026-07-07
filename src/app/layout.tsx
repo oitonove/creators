@@ -1,10 +1,10 @@
-// Portal do Criador — OITONOVE
+// Portal do Criador - OITONOVE
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Portal do Criador — OITONOVE",
+  title: "Portal do Criador - OITONOVE",
   description: "Área do criador parceiro OITONOVE: cupom, vendas e comissões.",
   robots: { index: false, follow: false },
 };

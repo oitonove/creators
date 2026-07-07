@@ -1,10 +1,10 @@
-// /login — email + senha (enviada por email na aprovação / reset).
+// /login - email + senha (enviada por email na aprovação / reset).
 import { redirect } from "next/navigation";
-import { loginWithPassword } from "@/lib/crm";
+import { getMockCredentials, loginWithPassword } from "@/lib/crm";
 import { getSessionToken, setSessionToken } from "@/lib/session";
 import { SubmitButton } from "@/components/SubmitButton";
 
-export const metadata = { title: "Entrar — Portal do Criador OITONOVE" };
+export const metadata = { title: "Entrar - Portal do Criador OITONOVE" };
 
 async function login(formData: FormData) {
   "use server";
@@ -26,12 +26,22 @@ export default async function LoginPage({
   const sp = await searchParams;
   if (await getSessionToken()) redirect("/dashboard");
 
+  const mock = getMockCredentials();
+
   return (
     <main className="mx-auto max-w-sm">
       <h1 className="mb-2 text-[22px] font-semibold tracking-[-0.03em]">Entrar no portal</h1>
       <p className="mb-8 text-[13px] leading-relaxed text-neutral-500">
         Use o email e a senha enviados quando seu cadastro foi aprovado.
       </p>
+
+      {mock && (
+        <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-[13px] text-sky-800">
+          <div className="font-medium">Modo local de teste ativo</div>
+          <div>Email: {mock.email}</div>
+          <div>Senha: {mock.password}</div>
+        </div>
+      )}
 
       {sp.erro && (
         <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-[13px] text-red-700">
@@ -43,6 +53,7 @@ export default async function LoginPage({
           type="email"
           name="email"
           required
+          defaultValue={mock?.email}
           placeholder="seu@email.com"
           className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[14px] placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none"
         />
@@ -50,6 +61,7 @@ export default async function LoginPage({
           type="password"
           name="password"
           required
+          defaultValue={mock?.password}
           placeholder="Senha"
           className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[14px] placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none"
         />

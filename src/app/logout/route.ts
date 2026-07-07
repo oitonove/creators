@@ -1,6 +1,6 @@
-// /logout — limpa o cookie de sessão e volta pro login.
+// /logout - limpa o cookie de sessão e volta pro login.
 // POST-only: GET tem efeito colateral (derruba sessão) e é alvo de
-// prefetch/crawler/CSRF via link — evitado de propósito.
+// prefetch/crawler/CSRF via link - evitado de propósito.
 import { NextRequest, NextResponse } from "next/server";
 import { clearSessionToken } from "@/lib/session";
 
