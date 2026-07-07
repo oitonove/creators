@@ -21,7 +21,7 @@ async function login(formData: FormData) {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ erro?: string }>;
+  searchParams: Promise<{ erro?: string; cadastro?: string }>;
 }) {
   const sp = await searchParams;
   if (await getSessionToken()) redirect("/dashboard");
@@ -46,6 +46,11 @@ export default async function LoginPage({
       {sp.erro && (
         <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-[13px] text-red-700">
           Email ou senha inválidos.
+        </div>
+      )}
+      {sp.cadastro && (
+        <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-[13px] text-emerald-800">
+          Cadastro concluído. Se o acesso já foi liberado, verifique seu email para entrar no portal.
         </div>
       )}
       <form action={login} className="flex flex-col gap-3">

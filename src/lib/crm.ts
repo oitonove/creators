@@ -45,6 +45,19 @@ export type Materials = {
   campaigns: Array<{ title: string; description: string; until?: string }>;
 };
 
+export type CreatorOnboarding = {
+  name: string;
+  email: string;
+  phone: string | null;
+  postalCode: string | null;
+  address: string | null;
+  addressNumber: string | null;
+  addressComplement: string | null;
+  district: string | null;
+  city: string | null;
+  state: string | null;
+};
+
 const mockMe: Me = {
   name: "Criadora Teste",
   instagram: "@criadora.teste",
@@ -215,4 +228,36 @@ export async function getPayouts(): Promise<Payout[]> {
 export async function getMaterials(): Promise<Materials> {
   if (MOCK_ENABLED) return mockMaterials;
   return (await authedFetch("/api/creators/materials")).materials as Materials;
+}
+
+// ── Onboarding público pós-aprovação ─────────────────────────────────────────
+
+export async function getCreatorOnboarding(token: string): Promise<CreatorOnboarding | null> {
+  try {
+    const json = await crmFetch(`/api/creators/onboarding/${encodeURIComponent(token)}`);
+    return json.creator as CreatorOnboarding;
+  } catch (e) {
+    if (e instanceof CrmError && e.status === 404) return null;
+    throw e;
+  }
+}
+
+export async function submitCreatorOnboarding(
+  token: string,
+  payload: {
+    phone: string;
+    postalCode: string;
+    address: string;
+    addressNumber: string;
+    addressComplement?: string | null;
+    district: string;
+    city: string;
+    state: string;
+  }
+): Promise<{ warning?: string | null }> {
+  const json = await crmFetch(`/api/creators/onboarding/${encodeURIComponent(token)}`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  return { warning: typeof json.warning === "string" ? json.warning : null };
 }
